@@ -4,8 +4,8 @@ from typing import Union
 import matplotlib.pyplot as plt
 
 def resize_and_save(input_fp: str, scale: Union[float, int]) -> np.ndarray:
-    
-    if scale <= 0 or scale > 100:
+
+    if scale <= 0 or scale > 1000:
         raise ValueError("Scale should be between 0 and 100, excluding 0.")
 
     _scale = lambda dim, s: int(dim * s / 100)
@@ -18,10 +18,10 @@ def resize_and_save(input_fp: str, scale: Union[float, int]) -> np.ndarray:
     resized_image = cv2.resize(src=im, dsize=new_dim, interpolation=cv2.INTER_LINEAR)
     
     print(new_dim)
-    resized_image = cv2.cvtColor(resized_image, cv2.COLOR_RGB2BGR)
 
     # Save the resized image
     save_resize(input_fp, resized_image)
+    resized_image = cv2.cvtColor(resized_image, cv2.COLOR_RGB2BGR)
     
     plt.imshow(resized_image)
     plt.show()
