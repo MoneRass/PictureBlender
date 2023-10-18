@@ -5,16 +5,6 @@ import matplotlib.pyplot as plt
 
 def resize_and_save(input_fp: str, scale: Union[float, int]) -> np.ndarray:
 
-    """ Resize an image maintaining its proportions and save the resized image.
-    
-    Args:
-        input_fp (str): Path to the input image file.
-        output_fp (str): Path to save the resized image.
-        scale (Union[float, int]): Percent as a whole number of the original image, e.g., 53.
-    
-    Returns:
-        image (np.ndarray): Scaled image.
-    """
     _scale = lambda dim, s: int(dim * s / 100)
     im: np.ndarray = cv2.imread(input_fp)
     height, width, channels = im.shape
