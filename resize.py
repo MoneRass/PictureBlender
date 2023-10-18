@@ -25,6 +25,7 @@ def resize_and_save(input_fp: str, scale: Union[float, int]) -> np.ndarray:
     resized_image = cv2.resize(src=im, dsize=new_dim, interpolation=cv2.INTER_LINEAR)
     
     print(new_dim)
+    resized_image = cv2.cvtColor(resized_image, cv2.COLOR_RGB2BGR)
 
     # Save the resized image
     save_resize(input_fp, resized_image)

@@ -12,7 +12,7 @@ from resize import resize_and_save
 
 # create the root window
 root = tk.Tk()
-root.title('Picture B;ender Application')
+root.title('Picture Blender Application')
 root.resizable(False, False)
 root.geometry('500x250')
 

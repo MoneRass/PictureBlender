@@ -157,12 +157,10 @@ def blend(img1, img2):
         for i in histr:
             s += i
             cdf.append(s/all_pixel) 
-    #     plt.plot(cdf, color=col)
-
+    
      # Save the resized image
     save_blend(img1, img2, res)
 
-    # plt.title("CDF res Image")
     plt.imshow(res)
     plt.show()
 
