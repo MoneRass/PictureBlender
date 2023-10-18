@@ -4,11 +4,15 @@ from tkinter import filedialog as fd
 from tkinter import Label
 from tkinter.messagebox import showinfo
 
+from PIL import Image
+import PIL
+
 from process import blend
+from resize import resize_and_save
 
 # create the root window
 root = tk.Tk()
-root.title('Tkinter Open File Dialog')
+root.title('Picture B;ender Application')
 root.resizable(False, False)
 root.geometry('500x250')
 
@@ -17,6 +21,9 @@ header = Label(root, text='Picture Blending Applicatoin!!!')
 base_file = ''
 color_file = ''
 
+def save_file():
+    im = Image.open(r'img\temp.jpg')
+    im = im.save('res.jpg')
 
 def select_base():
     global base_file
@@ -27,7 +34,7 @@ def select_base():
 
     filename = fd.askopenfilename(
         title='Open a file',
-        initialdir='/',
+        initialdir='D:/PictureBlender/img',
         filetypes=filetypes)
     if filename:
         base_text.set(f'Base picture : {filename}')
@@ -43,18 +50,37 @@ def select_color():
 
     filename = fd.askopenfilename(
         title='Open a file',
-        initialdir='/',
+        initialdir='D:/PictureBlender/img',
         filetypes=filetypes)
     if filename:
-        base_text.set(f'Color picture : {filename}')
+        color_text.set(f'Color picture : {filename}')
         color_file = filename
 
-def say_hello():
-    header = Label(root, text='Picture Blending Applicatoin!!!')
-    header.pack()
+def start():
+    global color_file
+    global base_file
 
-def Blend():
-    blend(base_file, color_file)
+    inp_size = inputtxt.get(1.0, "end-1c")
+    
+    if color_file != '':
+
+        blend(base_file, color_file)
+
+        if inp_size != '':
+            base_file = base_file.split('/')
+            color_file = color_file.split('/')
+            blended_file = "blended_img/blended_"+base_file[-1][:-4]+'_'+color_file[-1]
+            print(blended_file)
+            resize_and_save(blended_file, int(inp_size))
+
+    elif color_file == '' and inp_size!='':
+        resize_and_save(base_file, int(inp_size))
+
+    else:
+        print('Please select base picture')
+    
+    
+
 
 # open button
 base_picture_button = ttk.Button(
@@ -69,24 +95,17 @@ color_picture_button = ttk.Button(
     command=select_color
 )
 
-hello_btn = ttk.Button(
-    root,
-    text='hello',
-    command=say_hello
-)
-
-pb = ttk.Progressbar(
-    root,
-    orient='horizontal',
-    mode='indeterminate',
-    length=280
-)
-
 blend_btn = ttk.Button(
     root,
     text='blend',
-    command=Blend
+    command=start
+    
 )
+
+# TextBox Creation 
+inputtxt = tk.Text(root, 
+                   height = 1, 
+                   width = 5) 
 
 base_text = tk.StringVar()
 base_text.set('Base picture : ')
@@ -99,6 +118,13 @@ color_text.set('Color picture : ')
 color_label = tk.Label(root, textvariable=color_text)
 
 
+scale_text = tk.StringVar()
+scale_text.set('Set scale (%) : ')
+
+scale_label = tk.Label(root, textvariable=scale_text)
+
+
+
 base_label.pack()
 
 base_picture_button.pack()
@@ -106,6 +132,9 @@ base_picture_button.pack()
 color_label.pack()
 
 color_picture_button.pack()
+
+scale_label.pack()
+inputtxt.pack()
 
 blend_btn.pack()
 

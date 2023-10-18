@@ -16,12 +16,6 @@ def blend(img1, img2):
 
     color = ('b','g','r')
 
-    plt.subplot(331)
-    plt.imshow(girl)
-    plt.title("Original Color Image")
-
-    plt.subplot(332)
-
     #Loop through each color sequentially
     for i,col in enumerate(color):
         
@@ -31,13 +25,10 @@ def blend(img1, img2):
         #To use numpy histogram function, uncomment below
         #histr, _ = np.histogram(colorimage[:,:,i],256,[0,256])
         histr = [i/all_pixel for i in histr]
-        plt.plot(histr, color=col)
-
-    plt.title("Hist Original Image")
 
     girl_sum = []
 
-    plt.subplot(333)
+    # plt.subplot(333)
 
     #Loop through each color sequentially
     for i,col in enumerate(color):
@@ -53,15 +44,15 @@ def blend(img1, img2):
             s += i
             girl_sum.append(int(s))
             cdf.append(s/all_pixel) 
-        plt.plot(cdf, color=col)
+    #     plt.plot(cdf, color=col)
 
-    plt.title("CDF Image")
+    # plt.title("CDF Image")
 
-    plt.subplot(334)
-    plt.imshow(fuji)
-    plt.title("Original Template Image")
+    # plt.subplot(334)
+    # plt.imshow(fuji)
+    # plt.title("Original Template Image")
 
-    plt.subplot(335)
+    # plt.subplot(335)
 
     #Loop through each color sequentially
     for i,col in enumerate(color):
@@ -72,13 +63,8 @@ def blend(img1, img2):
         #To use numpy histogram function, uncomment below
         #histr, _ = np.histogram(colorimage[:,:,i],256,[0,256])
         histr = [i/all_pixel for i in histr]
-        plt.plot(histr, color=col)
-
-    plt.title("Hist Template Image")
-
+    
     fuji_sum = []
-
-    plt.subplot(336)
 
     #Loop through each color sequentially
     for i,col in enumerate(color):
@@ -94,10 +80,7 @@ def blend(img1, img2):
             s += i
             fuji_sum.append(int(s))
             cdf.append(s/all_pixel) 
-        plt.plot(cdf, color=col)
-
-    plt.title("CDF Template Image")
-
+   
     def nearest_val(val,tarr):
         thres = 10e10
         dum_dex = 0
@@ -143,14 +126,8 @@ def blend(img1, img2):
     res[:,:,1] = girl_green
     res[:,:,2] = girl_red
 
-
-    plt.subplot(337)
-    plt.imshow(res)
-    plt.title("res")
-
-    plt.subplot(338)
-
-    #Loop through each color sequentially
+    
+   
     for i,col in enumerate(color):
         
         #To use OpenCV's calcHist function, uncomment below
@@ -159,13 +136,13 @@ def blend(img1, img2):
         #To use numpy histogram function, uncomment below
         #histr, _ = np.histogram(colorimage[:,:,i],256,[0,256])
         histr = [i/all_pixel for i in histr]
-        plt.plot(histr, color=col)
+    #     plt.plot(histr, color=col)
 
-    plt.title("Result Image")
+    # plt.title("Result Image")
 
     fuji_sum = []
 
-    plt.subplot(339)
+    # plt.subplot(339)
 
     #Loop through each color sequentially
     for i,col in enumerate(color):
@@ -180,9 +157,26 @@ def blend(img1, img2):
         for i in histr:
             s += i
             cdf.append(s/all_pixel) 
-        plt.plot(cdf, color=col)
+    #     plt.plot(cdf, color=col)
 
-    plt.title("CDF res Image")
+     # Save the resized image
+    save_blend(img1, img2, res)
 
+    # plt.title("CDF res Image")
+    plt.imshow(res)
     plt.show()
 
+
+
+    return res
+
+def save_blend(img1, img2, res):
+    output_name1 = img1.split('/')
+    output_name2 = img2.split('/')
+    output_name = 'blended_'+output_name1[-1][:-4]+"_"+output_name2[-1]
+    output_folder = 'blended_img'
+    output_path = output_folder + '/' + output_name
+    res = cv2.cvtColor(res, cv2.COLOR_RGB2BGR)
+    cv2.imwrite(output_path, res)
+
+#blend('img/doraemon.png','img/lav.jpg')
