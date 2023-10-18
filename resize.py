@@ -4,6 +4,9 @@ from typing import Union
 import matplotlib.pyplot as plt
 
 def resize_and_save(input_fp: str, scale: Union[float, int]) -> np.ndarray:
+    
+    if scale <= 0 or scale > 100:
+        raise ValueError("Scale should be between 0 and 100, excluding 0.")
 
     _scale = lambda dim, s: int(dim * s / 100)
     im: np.ndarray = cv2.imread(input_fp)
